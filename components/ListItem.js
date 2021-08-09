@@ -1,31 +1,44 @@
 //=========================Todo List Item=============================
-function ListItem(title) {
-    this.title = title;
-}
 
- export function createItemElement(title) {
+export function createItemElement(title) {
 
-    let item = new ListItem(title);
 
-    const itemContainer = document.createElement('div');
-    const itemTitle = document.createElement('p');
-    const itemCategoryColor = document.createElement('p');
-    const itemCategoryColorSlicer = document.createElement('span');
-    
-    itemContainer.classList.add('list-item-container');
-    itemTitle.classList.add('item-title');
+    const card = document.createElement('div');
+    const cardHeader = document.createElement('div');
+    const cardHeaderTitle = document.createElement('p');
+    const cardHeaderIcon = document.createElement('button');
+    const cardIconSpan = document.createElement('span');
+    const cardIcon = document.createElement('i');
+    const cardContentContainer = document.createElement('div');
+    const cardContent = document.createElement('div');
 
-    // Category indicator - top right of the card
-    itemCategoryColor.classList.add('box');
-    itemCategoryColorSlicer.classList.add('content');
+    cardHeaderTitle.innerHTML = title;
 
-    itemTitle.innerHTML = item.title;
+    card.classList.add('card');
+    card.classList.add('spacer');
+    cardHeader.classList.add('card-header');
+    cardHeaderTitle.classList.add('card-header-title');
+    cardHeaderIcon.classList.add('card-header-icon');
+    cardHeaderIcon.setAttribute('aria-label','more options');
+    cardIconSpan.classList.add('icon');
+    cardIcon.classList.add('fas','fa-angle-down');
+    cardIcon.setAttribute('aria-hidden','true');
 
-    itemContainer.appendChild(itemTitle);
-    itemCategoryColor.appendChild(itemCategoryColorSlicer);
-    itemContainer.appendChild(itemCategoryColor);
+    cardContentContainer.classList.add('card-content');
+    cardContent.classList.add('content');
 
-    return (itemContainer);
-}        
+    cardIconSpan.appendChild(cardIcon);
+    cardHeaderIcon.appendChild(cardIconSpan);
+    // cardContentContainer.appendChild(cardContent);
+    cardHeader.appendChild(cardHeaderTitle);
+    cardHeader.appendChild(cardHeaderIcon);
+    card.appendChild(cardHeader);
+    // card.appendChild(cardContentContainer);
+
+
+    return (card);
+
+} 
+
 //=====================================================================
-    
+

@@ -1,58 +1,21 @@
+@import url("https://use.fontawesome.com/releases/v5.13.0/css/all.css");
+
+html, body, #app {
+    height: 100%;
+}
+
 body {
-    background-color: #ddd;
+    background-color: hsl(0, 0%, 3%);
 }
 
-#main {
-    display: flex;
-    justify-content: center;
-    width: 100%;    
+#app {
+    min-height: 100%;
 }
 
-p {
-    margin: 0;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+i {
+    margin-right: 0.5rem;
 }
 
-.list-item-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    background-color: white;
-    border: 1px solid #333;
-    height: 15vw;
-    aspect-ratio: 8/9;
-    margin: 4% 2%;
-    border-bottom: 2rem solid forestgreen;
-}
-
-.item-title {
-    margin: 2% 0 0 3%;
-}
-
-.box {
-    position: relative;
-    width: 1em;
-    height: 1em;
-    padding: 6px;
-    color: white;
-    text-align: right;
-}
-
-.box:before {
-    content: '';
-    display: block;
-    position: absolute;
-    z-index: 0;
-    top: 0;
-    right: 0;
-    width: 0;
-    height: 0;
-    border: 1rem solid transparent;
-    border-top-color: purple;
-    border-right-color: purple;
-} 
-
-.content {
-    position: relative;
-    z-index: 1;
+.spacer {
+    margin-top: 2%;
 }
