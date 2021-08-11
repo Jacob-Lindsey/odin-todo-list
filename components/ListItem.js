@@ -1,42 +1,65 @@
+import { deleteTodo } from "../src/index.js";
+import { displayItemDetails } from "./ItemDetails.js";
+
 //=========================Todo List Item=============================
 
-export function createItemElement(title) {
+export function createItemElement(item,todos) {
 
 
     const card = document.createElement('div');
-    const cardHeader = document.createElement('div');
+    const cardHeader = document.createElement('header');
     const cardHeaderTitle = document.createElement('p');
-    const cardHeaderIcon = document.createElement('button');
-    const cardIconSpan = document.createElement('span');
-    const cardIcon = document.createElement('i');
-    const cardContentContainer = document.createElement('div');
-    const cardContent = document.createElement('div');
+    const deleteButton = document.createElement('button');
+    const iconSpan = document.createElement('span');
+    const icon = document.createElement('i');
+    const checkControl = document.createElement('div');
+    const checkLabel = document.createElement('label');
+    const checkbox = document.createElement('input');
+    const controlIndicator = document.createElement('div');
 
-    cardHeaderTitle.innerHTML = title;
+    const taskDetails = document.getElementById('modal-details');
 
-    card.classList.add('card');
-    card.classList.add('spacer');
+    card.classList.add('card','my-5');
+    card.setAttribute('data-key', item.id);
     cardHeader.classList.add('card-header');
     cardHeaderTitle.classList.add('card-header-title');
-    cardHeaderIcon.classList.add('card-header-icon');
-    cardHeaderIcon.setAttribute('aria-label','more options');
-    cardIconSpan.classList.add('icon');
-    cardIcon.classList.add('fas','fa-angle-down');
-    cardIcon.setAttribute('aria-hidden','true');
+    cardHeaderTitle.innerHTML = item.title;
+    checkControl.classList.add('controlx','control--checkbox');
+    checkLabel.classList.add('checkbox');
+    checkbox.setAttribute('type','checkbox');
+    controlIndicator.classList.add('control__indicator');
+    deleteButton.classList.add('card-header-icon');
+    deleteButton.setAttribute('aria-label','delete');
+    iconSpan.classList.add('icon');
+    icon.classList.add('fa','fa-trash','trash-hover');
+    icon.setAttribute('aria-hidden','true');
 
-    cardContentContainer.classList.add('card-content');
-    cardContent.classList.add('content');
+    iconSpan.addEventListener('click', (event) => {
+        const getId = event.target.closest('div');
+        deleteTodo(getId.getAttribute('data-key'));
+    })
 
-    cardIconSpan.appendChild(cardIcon);
-    cardHeaderIcon.appendChild(cardIconSpan);
-    // cardContentContainer.appendChild(cardContent);
+    cardHeaderTitle.addEventListener('click', (event) => {
+        const getId = event.target.closest('div');
+        displayItemDetails(getId.getAttribute('data-key'),todos);
+        document.getElementById('modal-window').style.display = 'block';
+    })
+
+    checkLabel.appendChild(checkbox);
+    checkLabel.appendChild(controlIndicator);
+    checkControl.appendChild(checkLabel);
+
+    iconSpan.appendChild(icon);
+    deleteButton.appendChild(checkControl);
+    deleteButton.appendChild(iconSpan);
+    
     cardHeader.appendChild(cardHeaderTitle);
-    cardHeader.appendChild(cardHeaderIcon);
+    cardHeader.appendChild(deleteButton);
     card.appendChild(cardHeader);
-    // card.appendChild(cardContentContainer);
 
 
-    return (card);
+
+    return (card)
 
 } 
 

@@ -1,10 +1,11 @@
 import { format, compareAsc } from 'date-fns';
-import './style.css';
 import './bulma.css';
+import './style.css';
 import './normalize.css';
-import { createItemElement } from '../components/ListItem';
+import { createItemElement } from '../components/ListItem'; 
+import { createItemDetails, displayItemDetails } from '../components/ItemDetails';
 import { newItemButton } from '../components/NewItemButton';
-import { sidebar } from '../components/Sidebar';
+// import { sidebar } from '../components/Sidebar';
 import { toolbar } from '../components/Toolbar';
 
 
@@ -15,224 +16,163 @@ import { toolbar } from '../components/Toolbar';
 
 //  ----------------------- ADD ANY IMPORTED FONT FILES TO /SRC -----------------------
 
-const main = document.createElement('div');
-
-const nav = document.createElement('nav');
-const container = document.createElement('div');
-const navLeft = document.createElement('div');
-const navItemTop = document.createElement('a');
-const content = document.createElement('div');
-const contentSection = document.createElement('section');
-
-main.setAttribute('id','app');
-nav.classList.add('nav','has-shadow');
-container.classList.add('container');
-navLeft.classList.add('nav-left');
-navItemTop.classList.add('nav-item');
-content.classList.add('container','column','is-10');
-contentSection.classList.add('section');
-
-navItemTop.innerHTML = 'Todo List App';
-
-
-
-
-
-//------------------ Mobile Menu Elements --------------------
-
-const navToggle = document.createElement('label');
-const emptySpan = document.createElement('span');
-const menuToggle = document.createElement('input');
-const navRight = document.createElement('div');
-
-const link1Mobile = document.createElement('a');
-const link1SpanMobile = document.createElement('span');
-const link1IconMobile = document.createElement('i');
-
-const link2Mobile = document.createElement('a');
-const link2SpanMobile = document.createElement('span');
-const link2IconMobile = document.createElement('i');
-
-const link3Mobile = document.createElement('a');
-const link3SpanMobile = document.createElement('span');
-const link3IconMobile = document.createElement('i');
-
-
-navToggle.classList.add('nav-toggle');
-navToggle.setAttribute('for','menu-toggle');
-menuToggle.setAttribute('type','checkbox');
-menuToggle.setAttribute('id','menu-toggle');
-menuToggle.classList.add('is-hidden');
-navRight.classList.add('nav-right','nav-menu');
-
-link1Mobile.classList.add('nav-item','is-tab','is-hidden-tablet');
-link2Mobile.classList.add('nav-item','is-tab','is-hidden-tablet');
-link3Mobile.classList.add('nav-item','is-tab','is-hidden-tablet');
-link1SpanMobile.classList.add('icon');
-link2SpanMobile.classList.add('icon');
-link3SpanMobile.classList.add('icon');
-link1IconMobile.classList.add('fa','fa-home');
-link2IconMobile.classList.add('fa','fa-home');
-link3IconMobile.classList.add('fa','fa-home');
-
-//-------------------------------------------------------------
-//=============================================================
-//-------------------- Full Width Elements --------------------
-
-const mainContent = document.createElement('section');
-
-//------------------- Sidebar ------------------- 
-
-const aside = document.createElement('aside');
-const navTitle = document.createElement('p');
-const navList = document.createElement('ul');
-const navItem1 = document.createElement('li');
-const navLink1 = document.createElement('a');
-const linkSpan1 = document.createElement('span');
-const linkIcon1 = document.createElement('i');
-const navItem2 = document.createElement('li');
-const navLink2 = document.createElement('a');
-const linkSpan2 = document.createElement('span');
-const linkIcon2 = document.createElement('i');
-const navItem3 = document.createElement('li');
-const navLink3 = document.createElement('a');
-const linkSpan3 = document.createElement('span');
-const linkIcon3 = document.createElement('i');
-
-
-
-navTitle.innerHTML = 'Navigation';
-
-mainContent.classList.add('main-content','columns','is-fullheight');
-aside.classList.add('column','is-2','is-narrow-mobile','is-fullheight','section','is-hidden-mobile','has-background-black');
-navTitle.classList.add('menu-label','is-hidden-touch');
-navList.classList.add('menu-list');
-navLink1.setAttribute('href','#');
-linkSpan1.classList.add('icon');
-linkIcon1.classList.add('fa','fa-home');
-navLink2.setAttribute('href','#');
-linkSpan2.classList.add('icon');
-linkIcon2.classList.add('fa','fa-home');
-navLink3.setAttribute('href','#');
-linkSpan3.classList.add('icon');
-linkIcon3.classList.add('fa','fa-home');
-
-linkSpan1.appendChild(linkIcon1);
-linkSpan2.appendChild(linkIcon2);
-linkSpan3.appendChild(linkIcon3);
-linkIcon1.insertAdjacentText('afterend','Home');
-linkIcon2.insertAdjacentText('afterend','Home');
-linkIcon3.insertAdjacentText('afterend','Home');
-navLink1.appendChild(linkSpan1);
-navLink2.appendChild(linkSpan2);
-navLink3.appendChild(linkSpan3);
-
-navItem1.appendChild(navLink1);
-navItem2.appendChild(navLink2);
-navItem3.appendChild(navLink3);
-navList.appendChild(navItem1);
-navList.appendChild(navItem2);
-navList.appendChild(navItem3);
-aside.appendChild(navTitle);
-aside.appendChild(navList);
-mainContent.appendChild(aside);
-
-contentSection.appendChild(createItemElement('Take out trash'));
-contentSection.appendChild(createItemElement('Do dishes'));
-contentSection.appendChild(createItemElement('Clean Bathroom'));
-contentSection.appendChild(createItemElement('Take out trash'));
-contentSection.appendChild(createItemElement('Do dishes'));
-contentSection.appendChild(createItemElement('Clean Bathroom'));
-contentSection.appendChild(createItemElement('Take out trash'));
-contentSection.appendChild(createItemElement('Do dishes'));
-contentSection.appendChild(createItemElement('Clean Bathroom'));
-contentSection.appendChild(createItemElement('Take out trash'));
-contentSection.appendChild(createItemElement('Do dishes'));
-contentSection.appendChild(createItemElement('Clean Bathroom'));
-contentSection.appendChild(createItemElement('Take out trash'));
-contentSection.appendChild(createItemElement('Do dishes'));
-contentSection.appendChild(createItemElement('Clean Bathroom'));
-
-content.appendChild(contentSection);
-
-mainContent.appendChild(content);
-
-const lineBreak = document.createElement('br');
-
-link1SpanMobile.appendChild(link1IconMobile);
-link2SpanMobile.appendChild(link2IconMobile);
-link3SpanMobile.appendChild(link3IconMobile);
-link1Mobile.appendChild(link1SpanMobile);
-link2Mobile.appendChild(link2SpanMobile);
-link3Mobile.appendChild(link3SpanMobile);
-navRight.appendChild(link1Mobile);
-navRight.appendChild(link2Mobile);
-navRight.appendChild(link3Mobile);
-navLeft.appendChild(navItemTop);
-menuToggle.appendChild(emptySpan);
-menuToggle.appendChild(emptySpan);
-menuToggle.appendChild(emptySpan);
-container.appendChild(navLeft);
-container.appendChild(menuToggle);
-container.appendChild(navRight);
-nav.appendChild(container);
-
-main.appendChild(nav);
-main.appendChild(mainContent);
-
-
-//------------------------------------------------
-//================================================
-
-
-
-
-
-
-
-
-document.body.appendChild(main);
-
-
-
-//=========================Todo List Item==============================
-
-    //-------------Create Elements-------------
-
-
-
-    //------------Add CSS Selectors------------
-
-
-
-//=====================================================================
-
-
-
-
-//=========================Todo List Item==============================
-
-    //-------------Create Elements-------------
-
-
-
-    //------------Add CSS Selectors------------
-
-
-
-//=====================================================================
-
-
-
-
-//=========================Todo List Item==============================
-
-    //-------------Create Elements-------------
-
-
-
-    //------------Add CSS Selectors------------
-
-
-
-//=====================================================================
+let todos = [];
+
+const displayElement = (function() {
+    const contentRight = document.getElementById('content-right');
+    const submitButton = document.getElementById('add-task');
+    const inputField = document.getElementById('task-input');
+    const list = document.getElementById('list');
+    const modalDetails = document.getElementById('modal-details');
+    const modalSave = document.getElementById('modal-save');
+    const columns = document.createElement('div');
+    const aColumn = document.createElement('div');
+    
+    submitButton.addEventListener('click', function(event) {
+        addTodo(inputField.value);
+    });
+
+    columns.classList.add('columns','is-centered');
+    aColumn.classList.add('column','is-three-fifths','is-offset-one-fifth','is-cenetered','mt-6');
+
+    list.appendChild(aColumn);
+
+    return {
+        inputField,
+        submitButton,
+        modalDetails,
+        modalSave,
+        columns,
+        aColumn,
+    };
+})();
+
+//====================================================================
+
+const localStorageController = (function () {
+
+    function getFromLocalStorage() {
+        const reference = window.localStorage.getItem('todos');
+        if (reference) {
+            todos = JSON.parse(reference);
+            renderTodos();
+        }
+    }
+    function addToLocalStorage() {
+        localStorage.setItem('todos', JSON.stringify(todos));
+        renderTodos();
+    }
+    return {
+        getFromLocalStorage,
+        addToLocalStorage,
+    };
+})();
+
+//======================================================================
+
+function renderTodos() {
+    displayElement.aColumn.innerHTML = '';
+    todos.forEach(function(item) {
+        const newItem = createItemElement(item,todos);
+        displayElement.aColumn.appendChild(newItem);
+    })
+}
+
+function addTodo(item) {
+    if (item != '') {
+        const todo = {
+            id: Date.now(),
+            title: item,
+            details: '',
+            completed: false,
+        };
+        todos.push(todo);
+        localStorageController.addToLocalStorage();
+        displayElement.inputField.value = '';
+    }
+}
+
+export function deleteTodo(id) {
+    todos = todos.filter(function(item) {
+        return item.id != id;
+    });
+
+    localStorageController.addToLocalStorage();
+}
+
+function editTodo() {
+    let task = '';
+    const taskID = document.getElementById('hidden-id').innerHTML;
+    let reference = localStorage.getItem('todos');
+    if (reference) {
+        todos = JSON.parse(reference);
+        const taskDetails = todos.filter(function(e) {
+            return (e.id == taskID);
+        });
+        let taskIndex = todos.findIndex(x => x.id == taskID);
+        todos[taskIndex].details = displayElement.modalDetails.value;
+        task = taskDetails[0];
+        task.details = '';
+        task.details = displayElement.modalDetails.value;
+        localStorage.setItem('todos', JSON.stringify(todos));
+        
+    }
+    console.log(todos);
+}
+
+localStorageController.getFromLocalStorage();
+
+
+
+//======================================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // Get all "navbar-burger" elements
+    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+  
+    // Check if there are any navbar burgers
+    if ($navbarBurgers.length > 0) {
+  
+      // Add a click event on each of them
+      $navbarBurgers.forEach( el => {
+        el.addEventListener('click', () => {
+  
+          // Get the target from the "data-target" attribute
+          const target = el.dataset.target;
+          const $target = document.getElementById(target);
+  
+          // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+          el.classList.toggle('is-active');
+          $target.classList.toggle('is-active');
+  
+        });
+      });
+    }
+  
+  });
+
+  //======================================================================
+
+  document.getElementById('modal-exit').addEventListener('click', function() {
+      document.getElementById('modal-window').style.display = 'none'
+  });
+
+  document.getElementById('modal-cancel').addEventListener('click', function() {
+      document.getElementById('modal-window').style.display = 'none'
+  });
+
+  document.addEventListener('click', function(event) {
+      if (event.target.classList[0] == 'modal-background') {
+        document.getElementById('modal-window').style.display = 'none';
+      }
+  });
+
+  displayElement.modalSave.addEventListener('click', function(event) {
+      editTodo();
+      document.getElementById('modal-window').style.display = 'none';
+  })
+
+  //======================== Status Indicator ========================
+  
+ 
