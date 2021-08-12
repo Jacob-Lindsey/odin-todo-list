@@ -39,6 +39,9 @@
   },
   "dependencies": {
     "bulma": "^0.9.3",
-    "date-fns": "^2.23.0"
+    "bulma-calendar": "^6.1.12",
+    "date-fns": "^2.23.0",
+    "flatpickr": "^4.6.9",
+    "sweetalert2": "^11.1.2"
   }
 }

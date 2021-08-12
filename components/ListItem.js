@@ -57,6 +57,17 @@ export function createItemElement(item,todos) {
     cardHeader.appendChild(deleteButton);
     card.appendChild(cardHeader);
 
+    if (item.priority == 'Low') {
+        card.classList.add('low-priority');
+    } else if (item.priority == 'Medium') {
+        card.classList.add('medium-priority');
+    } else if (item.priority == 'High') {
+        card.classList.add('high-priority');
+    } else if (item.priority == 'Urgent') {
+        card.classList.add('urgent-priority');
+    }
+
+
 
 
     return (card)
@@ -64,4 +75,3 @@ export function createItemElement(item,todos) {
 } 
 
 //=====================================================================
-
