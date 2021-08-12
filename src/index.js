@@ -4,7 +4,7 @@ import './bulma.css';
 import './style.css';
 import './normalize.css';
 import { createItemElement } from '../components/ListItem'; 
-import { createItemDetails, displayItemDetails } from '../components/ItemDetails';
+import { displayItemDetails } from '../components/ItemDetails';
 import { newItemButton } from '../components/NewItemButton';
 // import { sidebar } from '../components/Sidebar';
 import { toolbar } from '../components/Toolbar';
@@ -32,6 +32,7 @@ const displayElement = (function() {
     const submitButton = document.getElementById('add-task');
     const inputField = document.getElementById('task-input');
     const list = document.getElementById('list');
+    const modalTitle = document.getElementById('modal-title');
     const modalDetails = document.getElementById('modal-details');
     const modalTaskTitle = document.getElementById('modal-task-title');
     const modalSave = document.getElementById('modal-save');
@@ -45,11 +46,6 @@ const displayElement = (function() {
     const columns = document.createElement('div');
     const aColumn = document.createElement('div');
     
-    
-    submitButton.addEventListener('click', function(event) {
-        addTodo(inputField.value);
-    });
-
     columns.classList.add('columns','is-centered');
     aColumn.classList.add('column','is-three-fifths','is-offset-one-fifth','is-centered','mt-6');
 
@@ -66,6 +62,7 @@ const displayElement = (function() {
         contentRight,
         inputField,
         submitButton,
+        modalTitle,
         modalDetails,
         modalTaskTitle,
         modalSave,
@@ -305,6 +302,19 @@ displayElement.tabNotes.addEventListener('click', (e) => {
     displayElement.categoryTitle.innerHTML = 'NOTES';
 });
 
+displayElement.inputField.addEventListener('keydown', function(event) {
+    if (displayElement.inputField.value && event.key == 'Enter') {
+        addTodo(displayElement.inputField.value);
+    }
+});
+
+displayElement.submitButton.addEventListener('click', function(event) {
+    addTodo(displayElement.inputField.value);
+    // let newID = displayElement.aColumn.firstElementChild.getAttribute('data-key');
+    // displayItemDetails(newID,todos);
+    // document.getElementById('modal-window').style.display = 'block';
+});
+
 document.getElementById('modal-exit').addEventListener('click', function() {
     document.getElementById('modal-window').style.display = 'none'
 });
@@ -333,7 +343,25 @@ displayElement.modalSave.addEventListener('click', function(event) {
     
     })
     document.getElementById('modal-window').style.display = 'none';
-})
+});
+
+displayElement.modalSave.addEventListener('keydown', function(event) {
+    if (event.key == 'Enter') {
+        editTodo();
+        Swal.fire({
+        position: 'center',
+        icon: 'success',
+        iconColor: '#02cc1d',
+        title: '<b style="color:#d9d9d9;">Your task has been updated!</b>',
+        showConfirmButton: false,
+        timer: 1500,
+        heightAuto: false,
+        background: '#742cd6',
+    
+    })
+    document.getElementById('modal-window').style.display = 'none';
+    }
+});
 
   //======================================================================
   

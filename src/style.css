@@ -1,22 +1,21 @@
 @import url("https://use.fontawesome.com/releases/v5.13.0/css/all.css");
 
-html,
-body,
-#app {
-  height: 100%;
-}
+
 
 #hidden-id {
   display: none;
 }
 
 body {
+  min-height: 100vh;
   background: rgb(33, 22, 68);
   background: linear-gradient(
     0deg,
     rgba(33, 22, 68, 1) 0%,
     rgba(19, 35, 60, 1) 100%
   );
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #app {
@@ -150,6 +149,10 @@ i {
 
 #deadline-label {
   color: #d9d9d9;
+}
+
+#modal-title {
+  text-transform: uppercase;
 }
 
 #modal-window {

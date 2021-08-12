@@ -13,7 +13,7 @@ export function displayItemDetails(id,todos) {
     const hiddenID = document.getElementById('hidden-id');
     hiddenID.innerHTML = id;
     document.getElementById('modal-window').style.display = 'block';
-    document.querySelector('.modal-card-title').textContent = 'Something goes here';
+    document.querySelector('.modal-card-title').textContent = task.title;
     document.querySelector('.modal-card-title').value = task.title;
     document.getElementById('modal-task-title').textContent = task.title;
     document.getElementById('modal-task-title').value = task.title;
