@@ -27,6 +27,7 @@ const displayElement = (function() {
     const tabSocial = document.getElementById('Social');
     const tabHousework = document.getElementById('Housework');
     const tabNotes = document.getElementById('Notes');
+    const categoryTitle = document.getElementById('category-title');
     const contentRight = document.getElementById('content-right');
     const submitButton = document.getElementById('add-task');
     const inputField = document.getElementById('task-input');
@@ -61,6 +62,8 @@ const displayElement = (function() {
         tabSocial,
         tabHousework,
         tabNotes,
+        categoryTitle,
+        contentRight,
         inputField,
         submitButton,
         modalDetails,
@@ -194,7 +197,8 @@ localStorageController.getFromLocalStorage();
 
 
 
-//======================================================================
+//=======================================================================
+//=========================== Event Listeners ===========================
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -223,6 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 displayElement.tabAll.addEventListener('click', (e) => {
     localStorageController.getFromLocalStorage();
+    displayElement.categoryTitle.innerHTML = 'ALL TASKS';
 });
 
 displayElement.tabShopping.addEventListener('click', (e) => { 
@@ -237,6 +242,7 @@ displayElement.tabShopping.addEventListener('click', (e) => {
             })
         }
     renderFilteredTodos(filteredTodos);
+    displayElement.categoryTitle.innerHTML = 'SHOPPING';
 });
 
 displayElement.tabWork.addEventListener('click', (e) => {
@@ -251,6 +257,7 @@ displayElement.tabWork.addEventListener('click', (e) => {
             })
         }
     renderFilteredTodos(filteredTodos);
+    displayElement.categoryTitle.innerHTML = 'WORK';
 });
 
 displayElement.tabSocial.addEventListener('click', (e) => {
@@ -265,6 +272,7 @@ displayElement.tabSocial.addEventListener('click', (e) => {
             })
         }
     renderFilteredTodos(filteredTodos);
+    displayElement.categoryTitle.innerHTML = 'SOCIAL';
 });
 
 displayElement.tabHousework.addEventListener('click', (e) => {
@@ -279,6 +287,7 @@ displayElement.tabHousework.addEventListener('click', (e) => {
             })
         }
     renderFilteredTodos(filteredTodos);
+    displayElement.categoryTitle.innerHTML = 'HOUSEWORK';
 });
 
 displayElement.tabNotes.addEventListener('click', (e) => {
@@ -293,42 +302,39 @@ displayElement.tabNotes.addEventListener('click', (e) => {
             })
         }
     renderFilteredTodos(filteredTodos);
+    displayElement.categoryTitle.innerHTML = 'NOTES';
 });
 
+document.getElementById('modal-exit').addEventListener('click', function() {
+    document.getElementById('modal-window').style.display = 'none'
+});
+
+document.getElementById('modal-cancel').addEventListener('click', function() {
+    document.getElementById('modal-window').style.display = 'none'
+});
+
+document.addEventListener('click', function(event) {
+    if (event.target.classList[0] == 'modal-background') {
+    document.getElementById('modal-window').style.display = 'none';
+    }
+});
+
+displayElement.modalSave.addEventListener('click', function(event) {
+    editTodo();
+    Swal.fire({
+    position: 'center',
+    icon: 'success',
+    iconColor: '#02cc1d',
+    title: '<b style="color:#d9d9d9;">Your task has been updated!</b>',
+    showConfirmButton: false,
+    timer: 1500,
+    heightAuto: false,
+    background: '#742cd6',
     
+    })
+    document.getElementById('modal-window').style.display = 'none';
+})
 
   //======================================================================
-
-  document.getElementById('modal-exit').addEventListener('click', function() {
-      document.getElementById('modal-window').style.display = 'none'
-  });
-
-  document.getElementById('modal-cancel').addEventListener('click', function() {
-      document.getElementById('modal-window').style.display = 'none'
-  });
-
-  document.addEventListener('click', function(event) {
-      if (event.target.classList[0] == 'modal-background') {
-        document.getElementById('modal-window').style.display = 'none';
-      }
-  });
-
-  displayElement.modalSave.addEventListener('click', function(event) {
-      editTodo();
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        iconColor: '#02cc1d',
-        title: '<b style="color:#d9d9d9;">Your task has been updated!</b>',
-        showConfirmButton: false,
-        timer: 1500,
-        heightAuto: false,
-        background: '#742cd6',
-        
-      })
-      document.getElementById('modal-window').style.display = 'none';
-  })
-
-  //======================== Status Indicator ========================
   
  
