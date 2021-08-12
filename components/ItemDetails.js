@@ -29,7 +29,6 @@ export function displayItemDetails(id,todos) {
             document.getElementById(`cat${i+1}`).checked = false;
         }
     }
-
-
-
 }
+
+// Pulls a specific Todo object's data to populate the modal form when opened

@@ -49,6 +49,10 @@ i {
   margin-top: 2%;
 }
 
+.card {
+  cursor: pointer;
+}
+
 .card-header {
   transition: background-color 300ms ease;
 }
@@ -159,6 +163,17 @@ i {
   display: none;
   z-index: 9999;
   overflow: auto;
+  opacity: 0;
+  animation: fade-in 300ms;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 #modal-header {

@@ -4,21 +4,17 @@ import './bulma.css';
 import './style.css';
 import './normalize.css';
 import { createItemElement } from '../components/ListItem'; 
-import { displayItemDetails } from '../components/ItemDetails';
-import { newItemButton } from '../components/NewItemButton';
-// import { sidebar } from '../components/Sidebar';
-import { toolbar } from '../components/Toolbar';
+// import { displayItemDetails } from '../components/ItemDetails';
 
+//======================================================================
+//======================================================================
 
-//  ----------------------------- IMPORT ANY IMAGES HERE! -----------------------------
-
-//  -----------------------------------------------------------------------------------
-
-//  ----------------------- ADD ANY IMPORTED FONT FILES TO /SRC -----------------------
-
+//=============
 let todos = [];
+//=============
 
-
+//=======================================================================
+//============================= UI Functions ============================
 
 const displayElement = (function() {
     const tabAll = document.getElementById('All');
@@ -78,7 +74,8 @@ const displayElement = (function() {
     };
 })();
 
-//====================================================================
+//==============================================================================
+//=========================== Local Storage Functions===========================
 
 const localStorageController = (function () {
 
@@ -86,12 +83,12 @@ const localStorageController = (function () {
         const reference = window.localStorage.getItem('todos');
         if (reference) {
             todos = JSON.parse(reference);
-            renderTodos();
+            todoController.renderTodos();
         }
     }
     function addToLocalStorage() {
         localStorage.setItem('todos', JSON.stringify(todos));
-        renderTodos();
+        todoController.renderTodos();
     }
     return {
         getFromLocalStorage,
@@ -99,40 +96,85 @@ const localStorageController = (function () {
     };
 })();
 
-//======================================================================
+//=============================================================================
+//=========================== Todo Object Functions ===========================
 
-function renderTodos() {
-    displayElement.aColumn.innerHTML = '';
-    todos.forEach(function(item) {
-        const newItem = createItemElement(item,todos);
-        displayElement.aColumn.appendChild(newItem);
-    })
-}
+const todoController = (function () {
 
-function renderFilteredTodos(arr) {
-    displayElement.aColumn.innerHTML = '';
-    arr.forEach(function(item) {
-        const newItem = createItemElement(item,arr);
-        displayElement.aColumn.appendChild(newItem);
-    })
-}
-
-function addTodo(item) {
-    if (item != '') {
-        const todo = {
-            id: Date.now(),
-            title: item,
-            details: '',
-            priority: '',
-            deadline: '',
-            category: [false,false,false,false,false],
-            completed: false,
-        };
-        todos.push(todo);
-        localStorageController.addToLocalStorage();
-        displayElement.inputField.value = '';
+    function renderTodos() {
+        displayElement.aColumn.innerHTML = '';
+        todos.forEach(function(item) {
+            const newItem = createItemElement(item,todos);
+            displayElement.aColumn.appendChild(newItem);
+        })
     }
-}
+    
+    function renderFilteredTodos(arr) {
+        displayElement.aColumn.innerHTML = '';
+        arr.forEach(function(item) {
+            const newItem = createItemElement(item,arr);
+            displayElement.aColumn.appendChild(newItem);
+        })
+    }
+    
+    function addTodo(item) {
+        if (item != '') {
+            const todo = {
+                id: Date.now(),
+                title: item,
+                details: '',
+                priority: '',
+                deadline: '',
+                category: [false,false,false,false,false],
+                completed: false,
+            };
+            todos.push(todo);
+            localStorageController.addToLocalStorage();
+            displayElement.inputField.value = '';
+        }
+    }
+    
+    function editTodo() {
+        let task = '';
+        const taskID = document.getElementById('hidden-id').innerHTML;
+    
+        let reference = localStorage.getItem('todos');
+        if (reference) {
+            todos = JSON.parse(reference);
+            const taskDetails = todos.filter(function(e) {
+                return (e.id == taskID);
+            });
+            let taskIndex = todos.findIndex(x => x.id == taskID);
+            todos[taskIndex].details = displayElement.modalDetails.value;
+            task = taskDetails[0];
+            task.details = '';
+            task.title = '';
+            task.details = displayElement.modalDetails.value;
+            task.title = displayElement.modalTaskTitle.value;
+            task.priority = displayElement.priorityList.value;
+            task.deadline = displayElement.datePicker.value;
+    
+            for (let i = 0; i < 5; i++) {
+                if (document.getElementById(`cat${i+1}`).checked == true) {
+                    task.category[i] = true;
+                } else {
+                    task.category[i] = false;
+                }
+            }
+    
+            localStorage.setItem('todos', JSON.stringify(todos));
+            clearModalFields();
+            renderTodos();
+        }
+    }
+
+    return {
+        renderTodos,
+        renderFilteredTodos,
+        addTodo,
+        editTodo,
+    }
+})();
 
 export function deleteTodo(id) {
     todos = todos.filter(function(item) {
@@ -141,41 +183,6 @@ export function deleteTodo(id) {
 
     localStorageController.addToLocalStorage();
 }
-
-function editTodo() {
-    let task = '';
-    const taskID = document.getElementById('hidden-id').innerHTML;
-
-    let reference = localStorage.getItem('todos');
-    if (reference) {
-        todos = JSON.parse(reference);
-        const taskDetails = todos.filter(function(e) {
-            return (e.id == taskID);
-        });
-        let taskIndex = todos.findIndex(x => x.id == taskID);
-        todos[taskIndex].details = displayElement.modalDetails.value;
-        task = taskDetails[0];
-        task.details = '';
-        task.title = '';
-        task.details = displayElement.modalDetails.value;
-        task.title = displayElement.modalTaskTitle.value;
-        task.priority = displayElement.priorityList.value;
-        task.deadline = displayElement.datePicker.value;
-
-        for (let i = 0; i < 5; i++) {
-            if (document.getElementById(`cat${i+1}`).checked == true) {
-                task.category[i] = true;
-            } else {
-                task.category[i] = false;
-            }
-        }
-
-        localStorage.setItem('todos', JSON.stringify(todos));
-        clearModalFields();
-        renderTodos();
-    }
-}
-
 
 function clearModalFields() {
     displayElement.modalDetails.value = '';
@@ -191,163 +198,140 @@ function clearModalFields() {
 
 localStorageController.getFromLocalStorage();
 
-
-
-
 //=======================================================================
 //=========================== Event Listeners ===========================
 
-document.addEventListener('DOMContentLoaded', () => {
+const appEventListeners = (function () {
 
-    // Get all "navbar-burger" elements
-    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-  
-    // Check if there are any navbar burgers
-    if ($navbarBurgers.length > 0) {
-  
-      // Add a click event on each of them
-      $navbarBurgers.forEach( el => {
-        el.addEventListener('click', () => {
-  
-          // Get the target from the "data-target" attribute
-          const target = el.dataset.target;
-          const $target = document.getElementById(target);
-  
-          // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-          el.classList.toggle('is-active');
-          $target.classList.toggle('is-active');
-  
-        });
-      });
-    }
-});
+    document.addEventListener('DOMContentLoaded', () => {
 
-displayElement.tabAll.addEventListener('click', (e) => {
-    localStorageController.getFromLocalStorage();
-    displayElement.categoryTitle.innerHTML = 'ALL TASKS';
-});
-
-displayElement.tabShopping.addEventListener('click', (e) => { 
-    let filteredTodos = [];
-    const reference = window.localStorage.getItem('todos');
-        if (reference) {
-            let filterTodos = JSON.parse(reference);
-            filterTodos.forEach(function(item) {
-                if (item.category[0] == true) {
-                    filteredTodos.push(item);
-                }
-            })
+        // Get all "navbar-burger" elements
+        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+        // Check if there are any navbar burgers
+        if ($navbarBurgers.length > 0) {
+          // Add a click event on each of them
+          $navbarBurgers.forEach( el => {
+            el.addEventListener('click', () => {
+              // Get the target from the "data-target" attribute
+              const target = el.dataset.target;
+              const $target = document.getElementById(target);
+              // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+              el.classList.toggle('is-active');
+              $target.classList.toggle('is-active');
+            });
+          });
         }
-    renderFilteredTodos(filteredTodos);
-    displayElement.categoryTitle.innerHTML = 'SHOPPING';
-});
+    });
 
-displayElement.tabWork.addEventListener('click', (e) => {
-    let filteredTodos = [];
-    const reference = window.localStorage.getItem('todos');
-        if (reference) {
-            let filterTodos = JSON.parse(reference);
-            filterTodos.forEach(function(item) {
-                if (item.category[1] == true) {
-                    filteredTodos.push(item);
-                }
-            })
-        }
-    renderFilteredTodos(filteredTodos);
-    displayElement.categoryTitle.innerHTML = 'WORK';
-});
+    displayElement.tabAll.addEventListener('click', (e) => {
+        localStorageController.getFromLocalStorage();
+        displayElement.categoryTitle.innerHTML = 'ALL TASKS';
+    });
 
-displayElement.tabSocial.addEventListener('click', (e) => {
-    let filteredTodos = [];
-    const reference = window.localStorage.getItem('todos');
-        if (reference) {
-            let filterTodos = JSON.parse(reference);
-            filterTodos.forEach(function(item) {
-                if (item.category[2] == true) {
-                    filteredTodos.push(item);
-                }
-            })
-        }
-    renderFilteredTodos(filteredTodos);
-    displayElement.categoryTitle.innerHTML = 'SOCIAL';
-});
-
-displayElement.tabHousework.addEventListener('click', (e) => {
-    let filteredTodos = [];
-    const reference = window.localStorage.getItem('todos');
-        if (reference) {
-            let filterTodos = JSON.parse(reference);
-            filterTodos.forEach(function(item) {
-                if (item.category[3] == true) {
-                    filteredTodos.push(item);
-                }
-            })
-        }
-    renderFilteredTodos(filteredTodos);
-    displayElement.categoryTitle.innerHTML = 'HOUSEWORK';
-});
-
-displayElement.tabNotes.addEventListener('click', (e) => {
-    let filteredTodos = [];
-    const reference = window.localStorage.getItem('todos');
-        if (reference) {
-            let filterTodos = JSON.parse(reference);
-            filterTodos.forEach(function(item) {
-                if (item.category[4] == true) {
-                    filteredTodos.push(item);
-                }
-            })
-        }
-    renderFilteredTodos(filteredTodos);
-    displayElement.categoryTitle.innerHTML = 'NOTES';
-});
-
-displayElement.inputField.addEventListener('keydown', function(event) {
-    if (displayElement.inputField.value && event.key == 'Enter') {
-        addTodo(displayElement.inputField.value);
-    }
-});
-
-displayElement.submitButton.addEventListener('click', function(event) {
-    addTodo(displayElement.inputField.value);
-    // let newID = displayElement.aColumn.firstElementChild.getAttribute('data-key');
-    // displayItemDetails(newID,todos);
-    // document.getElementById('modal-window').style.display = 'block';
-});
-
-document.getElementById('modal-exit').addEventListener('click', function() {
-    document.getElementById('modal-window').style.display = 'none'
-});
-
-document.getElementById('modal-cancel').addEventListener('click', function() {
-    document.getElementById('modal-window').style.display = 'none'
-});
-
-document.addEventListener('click', function(event) {
-    if (event.target.classList[0] == 'modal-background') {
-    document.getElementById('modal-window').style.display = 'none';
-    }
-});
-
-displayElement.modalSave.addEventListener('click', function(event) {
-    editTodo();
-    Swal.fire({
-    position: 'center',
-    icon: 'success',
-    iconColor: '#02cc1d',
-    title: '<b style="color:#d9d9d9;">Your task has been updated!</b>',
-    showConfirmButton: false,
-    timer: 1500,
-    heightAuto: false,
-    background: '#742cd6',
+    displayElement.tabShopping.addEventListener('click', (e) => { 
+        let filteredTodos = [];
+        const reference = window.localStorage.getItem('todos');
+            if (reference) {
+                let filterTodos = JSON.parse(reference);
+                filterTodos.forEach(function(item) {
+                    if (item.category[0] == true) {
+                        filteredTodos.push(item);
+                    }
+                })
+            }
+        renderFilteredTodos(filteredTodos);
+        displayElement.categoryTitle.innerHTML = 'SHOPPING';
+    });
     
-    })
-    document.getElementById('modal-window').style.display = 'none';
-});
-
-displayElement.modalSave.addEventListener('keydown', function(event) {
-    if (event.key == 'Enter') {
-        editTodo();
+    displayElement.tabWork.addEventListener('click', (e) => {
+        let filteredTodos = [];
+        const reference = window.localStorage.getItem('todos');
+            if (reference) {
+                let filterTodos = JSON.parse(reference);
+                filterTodos.forEach(function(item) {
+                    if (item.category[1] == true) {
+                        filteredTodos.push(item);
+                    }
+                })
+            }
+            todoController.renderFilteredTodos(filteredTodos);
+        displayElement.categoryTitle.innerHTML = 'WORK';
+    });
+    
+    displayElement.tabSocial.addEventListener('click', (e) => {
+        let filteredTodos = [];
+        const reference = window.localStorage.getItem('todos');
+            if (reference) {
+                let filterTodos = JSON.parse(reference);
+                filterTodos.forEach(function(item) {
+                    if (item.category[2] == true) {
+                        filteredTodos.push(item);
+                    }
+                })
+            }
+            todoController.renderFilteredTodos(filteredTodos);
+        displayElement.categoryTitle.innerHTML = 'SOCIAL';
+    });
+    
+    displayElement.tabHousework.addEventListener('click', (e) => {
+        let filteredTodos = [];
+        const reference = window.localStorage.getItem('todos');
+            if (reference) {
+                let filterTodos = JSON.parse(reference);
+                filterTodos.forEach(function(item) {
+                    if (item.category[3] == true) {
+                        filteredTodos.push(item);
+                    }
+                })
+            }
+            todoController.renderFilteredTodos(filteredTodos);
+        displayElement.categoryTitle.innerHTML = 'HOUSEWORK';
+    });
+    
+    displayElement.tabNotes.addEventListener('click', (e) => {
+        let filteredTodos = [];
+        const reference = window.localStorage.getItem('todos');
+            if (reference) {
+                let filterTodos = JSON.parse(reference);
+                filterTodos.forEach(function(item) {
+                    if (item.category[4] == true) {
+                        filteredTodos.push(item);
+                    }
+                })
+            }
+            todoController.renderFilteredTodos(filteredTodos);
+        displayElement.categoryTitle.innerHTML = 'NOTES';
+    });
+    
+    displayElement.inputField.addEventListener('keydown', function(event) {
+        if (displayElement.inputField.value && event.key == 'Enter') {
+            todoController.addTodo(displayElement.inputField.value);
+        }
+    });
+    
+    displayElement.submitButton.addEventListener('click', function(event) {
+        todoController.addTodo(displayElement.inputField.value);
+        // let newID = displayElement.aColumn.firstElementChild.getAttribute('data-key');
+        // displayItemDetails(newID,todos);
+        // document.getElementById('modal-window').style.display = 'block';
+    });
+    
+    document.getElementById('modal-exit').addEventListener('click', function() {
+        document.getElementById('modal-window').style.display = 'none'
+    });
+    
+    document.getElementById('modal-cancel').addEventListener('click', function() {
+        document.getElementById('modal-window').style.display = 'none'
+    });
+    
+    document.addEventListener('click', function(event) {
+        if (event.target.classList[0] == 'modal-background') {
+        document.getElementById('modal-window').style.display = 'none';
+        }
+    });
+    
+    displayElement.modalSave.addEventListener('click', function(event) {
+        todoController.editTodo();
         Swal.fire({
         position: 'center',
         icon: 'success',
@@ -357,12 +341,27 @@ displayElement.modalSave.addEventListener('keydown', function(event) {
         timer: 1500,
         heightAuto: false,
         background: '#742cd6',
+        
+        })
+        document.getElementById('modal-window').style.display = 'none';
+    });
     
-    })
-    document.getElementById('modal-window').style.display = 'none';
-    }
-});
+    displayElement.modalSave.addEventListener('keydown', function(event) {
+        if (event.key == 'Enter') {
+            todoController.editTodo();
+            Swal.fire({
+            position: 'center',
+            icon: 'success',
+            iconColor: '#02cc1d',
+            title: '<b style="color:#d9d9d9;">Your task has been updated!</b>',
+            showConfirmButton: false,
+            timer: 1500,
+            heightAuto: false,
+            background: '#742cd6',
+        
+        })
+        document.getElementById('modal-window').style.display = 'none';
+        }
+    });
 
-  //======================================================================
-  
- 
+})();

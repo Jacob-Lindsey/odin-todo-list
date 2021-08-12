@@ -43,6 +43,8 @@ export function createItemElement(item,todos) {
         const getId = event.target.closest('div');
         displayItemDetails(getId.getAttribute('data-key'),todos);
         document.getElementById('modal-window').style.display = 'block';
+        document.getElementById('modal-window').style.opacity = '1';
+
     })
 
     checkLabel.appendChild(checkbox);
@@ -67,11 +69,8 @@ export function createItemElement(item,todos) {
         card.classList.add('urgent-priority');
     }
 
-
-
-
     return (card)
 
 } 
 
-//=====================================================================
+// Builds a Todo list item
