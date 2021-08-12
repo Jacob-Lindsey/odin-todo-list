@@ -4,7 +4,6 @@
     <meta charset="utf-8" />
     <title>Development</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    
   </head>
   <body>
 
@@ -40,35 +39,41 @@
       
       <div class="tabs is-centered is-boxed">
         <ul>
-          <li>
+          <li id="All">
             <a>
-              <span>Pictures</span>
+              <span>All</span>
             </a>
           </li>
-          <li>
+          <li id="Shopping">
             <a>
-              <span>Music</span>
+              <span>Shopping</span>
             </a>
           </li>
-          <li>
+          <li id="Work">
             <a>
-              <span>Videos</span>
+              <span>Work</span>
             </a>
           </li>
-          <li>
+          <li id="Social">
             <a>
-              <span>Documents</span>
+              <span>Social</span>
             </a>
-          </li><li>
+          </li>
+          <li id="Housework">
             <a>
               <span>Housework</span>
+            </a>
+          </li>
+          <li id="Notes">
+            <a>
+              <span>Notes</span>
             </a>
           </li>
         </ul>
       </div>
 
     <div class="columns">
-      <div class="column is-2">
+      <!-- <div class="column is-2">
         <aside class="menu mt-6 ml-5">
           <p class="menu-label has-text-primary">Category</p>
           <ul class="menu-list">
@@ -86,8 +91,9 @@
             <li><a class=" has-text-grey-lighter">Item</a></li>
           </ul>
         </aside>
-      </div>
-      <div class="column is-1"></div>
+      </div> -->
+      <!-- <div class="column is-1"></div> -->
+      <div class="column mt-6"></div>
       <div class="column is-6 mt-6" id="content-right">
         <div class="field has-addons column is-grouped is-grouped-centered is-full mb-6">
           <div class="control">
@@ -97,8 +103,8 @@
         </div>
         <div class="column is-full" id="list">
         </div>
-        </div>
-        <div class="column is-3"></div>
+      </div>
+        <div class="column mt-6"></div>
       </div>
 
       <!-- ======================= MODAL CODE ======================= -->
@@ -116,13 +122,13 @@
               <div class="field-body">
                 <div class="field">
                   <p class="control is-expanded">
-                    <input class="input" type="text" placeholder="Task Name">
+                    <input class="input" id="modal-task-title" type="text" placeholder="Task Name">
                   </p>
                 </div>
                 <div class="field">
                   <p class="control is-expanded">
                     <span class="select is-fullwidth">
-                      <select>
+                      <select id="priority-list">
                         <option id="priority1">Low</option>
                         <option id="priority2">Medium</option>
                         <option id="priority3">High</option>
@@ -135,26 +141,41 @@
             </div>
             <textarea class="textarea" id="modal-details" placeholder="Leave yourself a note about your task!" rows='5'></textarea>
             <div class="columns mt-3">
-              <div class="column"></div>
-              <div class="field is-horizontal">
+              
+              <div class="field is-horizontal ml-3">
                 <div class="field-body">
                   <div class="control has-addons" id="categories">
-                    <input type="radio" id="cat1" name="answer">  
-                    <label for="cat1" class="radio">Yes</label>
-                    <input type="radio" id="cat2" name="answer">  
-                    <label for="cat2" class="radio">Yes</label>
-                    <input type="radio" id="cat3" name="answer">  
-                    <label for="cat3" class="radio">Yes</label>
-                    <input type="radio" id="cat4" name="answer">  
-                    <label for="cat4" class="radio">Yes</label>
-                    <input type="radio" id="cat5" name="answer">  
-                    <label for="cat5" class="radio">Yes</label>
+                    <input type="checkbox" id="cat1" name="answer">  
+                    <label for="cat1" class="checkbox">Shopping</label>
+                    <input type="checkbox" id="cat2" name="answer">  
+                    <label for="cat2" class="checkbox">Work</label>
+                    <input type="checkbox" id="cat3" name="answer">  
+                    <label for="cat3" class="checkbox">Social</label>
+                    <input type="checkbox" id="cat4" name="answer">  
+                    <label for="cat4" class="checkbox">Housework</label>
+                    <input type="checkbox" id="cat5" name="answer">  
+                    <label for="cat5" class="checkbox">Notes</label>
                       
                     </div>
                   </div>
                 </div>
                 <div class="column"></div>
               </div>
+              <div class="columns mt-3">
+                <div class="field is-horizontal ml-3">
+                  <div class="field-label">
+                    <label id="deadline-label" class="label">Deadline</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <div class="control">
+                        <input class="input" id="date-picker" type="date">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+
 
           </section>
           <footer class="modal-card-foot">
