@@ -11,6 +11,7 @@ import { createItemElement } from '../components/ListItem';
 
 //=============
 let todos = [];
+let projects = [];
 //=============
 
 //=======================================================================
@@ -28,6 +29,7 @@ const displayElement = (function() {
     const submitButton = document.getElementById('add-task');
     const inputField = document.getElementById('task-input');
     const list = document.getElementById('list');
+    const pageTitle = document.getElementById('page-title');
     const modalTitle = document.getElementById('modal-title');
     const modalDetails = document.getElementById('modal-details');
     const modalTaskTitle = document.getElementById('modal-task-title');
@@ -39,11 +41,24 @@ const displayElement = (function() {
     const category4 = document.getElementById('cat4');
     const category5 = document.getElementById('cat5');
     const datePicker = document.getElementById('date-picker');
+    const projectLinkList = document.getElementById('project-link-list');
+    const defaultProject = document.getElementById('default-project');
+    const newProjectSidebar = document.getElementById('new-project');
+    const newProjectTopNav = document.getElementById('new-project-top-nav');
+    const projectSelector = document.getElementById('project-selector');
+    const projectModalWindow = document.getElementById('project-modal-window');
+    const projectModalTitle = document.getElementById('project-modal-title');
+    const projectInput = document.getElementById('project-input');
+    const projectModalDetails = document.getElementById('project-modal-details');
+    const projectModalTaskTitle = document.getElementById('project-modal-task-title');
+    const projectModalSave = document.getElementById('project-modal-save');
+
     const columns = document.createElement('div');
     const aColumn = document.createElement('div');
     
     columns.classList.add('columns','is-centered');
     aColumn.classList.add('column','is-three-fifths','is-offset-one-fifth','is-centered','mt-6');
+    aColumn.setAttribute('id','mobile-column');
 
     list.appendChild(aColumn);
 
@@ -57,6 +72,7 @@ const displayElement = (function() {
         categoryTitle,
         contentRight,
         inputField,
+        pageTitle,
         submitButton,
         modalTitle,
         modalDetails,
@@ -69,13 +85,24 @@ const displayElement = (function() {
         category4,
         category5,
         datePicker,
+        projectLinkList,
+        defaultProject,
+        newProjectSidebar,
+        newProjectTopNav,
+        projectSelector,
+        projectModalWindow,
+        projectModalTitle,
+        projectInput,
+        projectModalDetails,
+        projectModalTaskTitle,
+        projectModalSave,
         columns,
         aColumn,
     };
 })();
 
 //==============================================================================
-//=========================== Local Storage Functions===========================
+//===========================Todo Local Storage Functions===========================
 
 const localStorageController = (function () {
 
@@ -96,8 +123,68 @@ const localStorageController = (function () {
     };
 })();
 
+//==============================================================================
+//===========================Project Local Storage Functions===========================
+
+const projectLocalStorageController = (function () {
+
+    function getFromLocalStorage() {
+        const reference = window.localStorage.getItem('projects');
+        if (reference) {
+            projects = JSON.parse(reference);
+            projectController.renderProjects();
+        }
+    }
+    function addToLocalStorage() {
+        localStorage.setItem('projects', JSON.stringify(projects));
+        projectController.renderProjects();
+    }
+    return {
+        getFromLocalStorage,
+        addToLocalStorage,
+    };
+})();
+
 //=============================================================================
-//=========================== Todo Object Functions ===========================
+//===========================Project Object Functions===========================
+
+const projectController = (function () {
+
+    function renderProjects() {
+        displayElement.projectLinkList.innerHTML = '';
+        projects.forEach(function(item) {
+            const newItem = createNewProject(item.title);
+            newItem.addEventListener('click', function() {
+                displayElement.pageTitle.innerHTML = item.title;
+            })
+            const projectSelectorOption = document.createElement('option');
+            projectSelectorOption.setAttribute('value',item.title);
+            projectSelectorOption.innerHTML = `${item.title}`;
+            displayElement.projectSelector.appendChild(projectSelectorOption);
+        })
+    }
+    
+    function addProject(item) {
+        if (item != '') {
+            const project = {
+                id: Date.now(),
+                title: item,
+                projects: [],
+            };
+            projects.push(project);
+            projectLocalStorageController.addToLocalStorage();
+            displayElement.projectInput.value = '';
+        }
+    }
+
+    return {
+        renderProjects,
+        addProject,
+    }
+})();
+
+//=============================================================================
+//===========================Todo Object Functions===========================
 
 const todoController = (function () {
 
@@ -117,7 +204,7 @@ const todoController = (function () {
         })
     }
     
-    function addTodo(item) {
+    function addTodo(item,project) {
         if (item != '') {
             const todo = {
                 id: Date.now(),
@@ -125,6 +212,7 @@ const todoController = (function () {
                 details: '',
                 priority: '',
                 deadline: '',
+                project: project,
                 category: [false,false,false,false,false],
                 completed: false,
             };
@@ -153,6 +241,7 @@ const todoController = (function () {
             task.title = displayElement.modalTaskTitle.value;
             task.priority = displayElement.priorityList.value;
             task.deadline = displayElement.datePicker.value;
+            task.project = displayElement.projectSelector.value;
     
             for (let i = 0; i < 5; i++) {
                 if (document.getElementById(`cat${i+1}`).checked == true) {
@@ -184,6 +273,16 @@ export function deleteTodo(id) {
     localStorageController.addToLocalStorage();
 }
 
+function createNewProject(title) {
+    const projectItem = document.createElement('li');
+    const projectLink = document.createElement('a');
+    projectLink.innerHTML = title;
+    projectItem.appendChild(projectLink);
+    displayElement.projectLinkList.appendChild(projectItem);
+
+    return(projectItem);
+}
+
 function clearModalFields() {
     displayElement.modalDetails.value = '';
     displayElement.modalTaskTitle.value = '';
@@ -197,6 +296,7 @@ function clearModalFields() {
 }
 
 localStorageController.getFromLocalStorage();
+projectLocalStorageController.getFromLocalStorage();
 
 //=======================================================================
 //=========================== Event Listeners ===========================
@@ -223,9 +323,17 @@ const appEventListeners = (function () {
         }
     });
 
+// // //================================================================================
+// // //=========================Highlights Active Sidebar Tab==========================
+
     displayElement.tabAll.addEventListener('click', (e) => {
         localStorageController.getFromLocalStorage();
-        displayElement.categoryTitle.innerHTML = 'ALL TASKS';
+        displayElement.tabAll.firstElementChild.classList.add('active-tab');
+        displayElement.tabShopping.firstElementChild.classList.remove('active-tab');
+        displayElement.tabWork.firstElementChild.classList.remove('active-tab');
+        displayElement.tabSocial.firstElementChild.classList.remove('active-tab');
+        displayElement.tabHousework.firstElementChild.classList.remove('active-tab');
+        displayElement.tabNotes.firstElementChild.classList.remove('active-tab');
     });
 
     displayElement.tabShopping.addEventListener('click', (e) => { 
@@ -238,9 +346,14 @@ const appEventListeners = (function () {
                         filteredTodos.push(item);
                     }
                 })
+                displayElement.tabAll.firstElementChild.classList.remove('active-tab');
+                displayElement.tabShopping.firstElementChild.classList.add('active-tab');
+                displayElement.tabWork.firstElementChild.classList.remove('active-tab');
+                displayElement.tabSocial.firstElementChild.classList.remove('active-tab');
+                displayElement.tabHousework.firstElementChild.classList.remove('active-tab');
+                displayElement.tabNotes.firstElementChild.classList.remove('active-tab');
             }
-        renderFilteredTodos(filteredTodos);
-        displayElement.categoryTitle.innerHTML = 'SHOPPING';
+        todoController.renderFilteredTodos(filteredTodos);
     });
     
     displayElement.tabWork.addEventListener('click', (e) => {
@@ -253,9 +366,14 @@ const appEventListeners = (function () {
                         filteredTodos.push(item);
                     }
                 })
+                displayElement.tabAll.firstElementChild.classList.remove('active-tab');
+                displayElement.tabShopping.firstElementChild.classList.remove('active-tab');
+                displayElement.tabWork.firstElementChild.classList.add('active-tab');
+                displayElement.tabSocial.firstElementChild.classList.remove('active-tab');
+                displayElement.tabHousework.firstElementChild.classList.remove('active-tab');
+                displayElement.tabNotes.firstElementChild.classList.remove('active-tab');
             }
             todoController.renderFilteredTodos(filteredTodos);
-        displayElement.categoryTitle.innerHTML = 'WORK';
     });
     
     displayElement.tabSocial.addEventListener('click', (e) => {
@@ -268,9 +386,14 @@ const appEventListeners = (function () {
                         filteredTodos.push(item);
                     }
                 })
+                displayElement.tabAll.firstElementChild.classList.remove('active-tab');
+                displayElement.tabShopping.firstElementChild.classList.remove('active-tab');
+                displayElement.tabWork.firstElementChild.classList.remove('active-tab');
+                displayElement.tabSocial.firstElementChild.classList.add('active-tab');
+                displayElement.tabHousework.firstElementChild.classList.remove('active-tab');
+                displayElement.tabNotes.firstElementChild.classList.remove('active-tab');
             }
             todoController.renderFilteredTodos(filteredTodos);
-        displayElement.categoryTitle.innerHTML = 'SOCIAL';
     });
     
     displayElement.tabHousework.addEventListener('click', (e) => {
@@ -283,9 +406,14 @@ const appEventListeners = (function () {
                         filteredTodos.push(item);
                     }
                 })
+                displayElement.tabAll.firstElementChild.classList.remove('active-tab');
+                displayElement.tabShopping.firstElementChild.classList.remove('active-tab');
+                displayElement.tabWork.firstElementChild.classList.remove('active-tab');
+                displayElement.tabSocial.firstElementChild.classList.remove('active-tab');
+                displayElement.tabHousework.firstElementChild.classList.add('active-tab');
+                displayElement.tabNotes.firstElementChild.classList.remove('active-tab');
             }
             todoController.renderFilteredTodos(filteredTodos);
-        displayElement.categoryTitle.innerHTML = 'HOUSEWORK';
     });
     
     displayElement.tabNotes.addEventListener('click', (e) => {
@@ -298,37 +426,115 @@ const appEventListeners = (function () {
                         filteredTodos.push(item);
                     }
                 })
+                displayElement.tabAll.firstElementChild.classList.remove('active-tab');
+                displayElement.tabShopping.firstElementChild.classList.remove('active-tab');
+                displayElement.tabWork.firstElementChild.classList.remove('active-tab');
+                displayElement.tabSocial.firstElementChild.classList.remove('active-tab');
+                displayElement.tabHousework.firstElementChild.classList.remove('active-tab');
+                displayElement.tabNotes.firstElementChild.classList.add('active-tab');
             }
             todoController.renderFilteredTodos(filteredTodos);
-        displayElement.categoryTitle.innerHTML = 'NOTES';
     });
     
+// // //================================================================================
+// // //======================Updates Todo Object's Project Value=======================
+
     displayElement.inputField.addEventListener('keydown', function(event) {
         if (displayElement.inputField.value && event.key == 'Enter') {
-            todoController.addTodo(displayElement.inputField.value);
+            let currentProject = document.getElementById('page-title').textContent;
+            todoController.addTodo(displayElement.inputField.value,currentProject);
         }
     });
     
     displayElement.submitButton.addEventListener('click', function(event) {
-        todoController.addTodo(displayElement.inputField.value);
-        // let newID = displayElement.aColumn.firstElementChild.getAttribute('data-key');
-        // displayItemDetails(newID,todos);
-        // document.getElementById('modal-window').style.display = 'block';
+        let currentProject = document.getElementById('page-title').textContent;
+        todoController.addTodo(displayElement.inputField.value,currentProject);
     });
     
+// // //================================================================================
+// // //===========================Handling Modal Open/Close============================
+
     document.getElementById('modal-exit').addEventListener('click', function() {
-        document.getElementById('modal-window').style.display = 'none'
+        document.getElementById('modal-window').style.display = 'none';
+        document.body.classList.remove('modal-open');
     });
     
     document.getElementById('modal-cancel').addEventListener('click', function() {
-        document.getElementById('modal-window').style.display = 'none'
+        document.getElementById('modal-window').style.display = 'none';
+        document.body.classList.remove('modal-open');
     });
     
     document.addEventListener('click', function(event) {
         if (event.target.classList[0] == 'modal-background') {
         document.getElementById('modal-window').style.display = 'none';
+        document.body.classList.remove('modal-open');
         }
     });
+
+    document.getElementById('project-modal-exit').addEventListener('click', function() {
+        document.getElementById('project-modal-window').style.display = 'none';
+        document.body.classList.remove('modal-open');
+    });
+    
+    document.getElementById('project-modal-cancel').addEventListener('click', function() {
+        document.getElementById('project-modal-window').style.display = 'none';
+        document.body.classList.remove('modal-open');
+    });
+    
+    document.addEventListener('click', function(event) {
+        if (event.target.classList[0] == 'modal-background') {
+        document.getElementById('project-modal-window').style.display = 'none';
+        document.body.classList.remove('modal-open');
+        }
+    });
+
+    displayElement.newProjectSidebar.addEventListener('click', () => {
+        displayElement.projectModalWindow.style.display = 'block';
+        displayElement.projectModalWindow.style.opacity = '1';
+        document.body.classList.add('modal-open');
+    });
+
+    displayElement.newProjectTopNav.addEventListener('click', () => {
+        displayElement.projectModalWindow.style.display = 'block';
+        displayElement.projectModalWindow.style.opacity = '1';
+        document.body.classList.add('modal-open');
+    });
+
+    window.addEventListener('keydown', function(event) {
+        if (event.key == 'n') {
+            displayElement.projectModalWindow.style.display = 'block';
+            displayElement.projectModalWindow.style.opacity = '1';
+            document.body.classList.add('modal-open');
+        }
+    })
+
+    window.addEventListener('keydown', function(event) {
+        if (event.key == 'Escape') {
+            document.getElementById('project-modal-window').style.display = 'none';
+            document.getElementById('modal-window').style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }
+    })
+
+// // //================================================================================
+// // //==============Event Listeners With Confimation Animations Attached==============
+
+    document.getElementById('move-project').addEventListener('click', function(event) {
+        todoController.editTodo();
+        Swal.fire({
+        position: 'center',
+        icon: 'success',
+        iconColor: '#02cc1d',
+        title: '<b style="color:#d9d9d9;">Your task has been updated!</b>',
+        showConfirmButton: false,
+        timer: 1500,
+        heightAuto: false,
+        background: '#742cd6',
+        
+        })
+        document.getElementById('modal-window').style.display = 'none';
+        document.body.classList.remove('modal-open');
+    } )
     
     displayElement.modalSave.addEventListener('click', function(event) {
         todoController.editTodo();
@@ -344,6 +550,7 @@ const appEventListeners = (function () {
         
         })
         document.getElementById('modal-window').style.display = 'none';
+        document.body.classList.remove('modal-open');
     });
     
     displayElement.modalSave.addEventListener('keydown', function(event) {
@@ -361,7 +568,56 @@ const appEventListeners = (function () {
         
         })
         document.getElementById('modal-window').style.display = 'none';
+        document.body.classList.remove('modal-open');
         }
     });
+
+    displayElement.projectModalSave.addEventListener('click', function(event) {
+        if (displayElement.projectInput.value) {
+            projectController.addProject(displayElement.projectInput.value);
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                iconColor: '#02cc1d',
+                title: '<b style="color:#d9d9d9;">Your project has been created!</b>',
+                showConfirmButton: false,
+                timer: 1500,
+                heightAuto: false,
+                background: '#742cd6',
+                
+            })
+            displayElement.projectModalWindow.style.display = 'none';
+            document.body.classList.remove('modal-open');
+        } else {
+            alert('Please enter a title for your project');
+        }
+        
+    });
+    
+    displayElement.projectModalSave.addEventListener('keydown', function(event) {
+        if (event.key == 'Enter') {
+            createNewProject(displayElement.projectInput.value);
+            projectController.addProject(displayElement.projectInput.value);
+            Swal.fire({
+            position: 'center',
+            icon: 'success',
+            iconColor: '#02cc1d',
+            title: '<b style="color:#d9d9d9;">Your project has been created!</b>',
+            showConfirmButton: false,
+            timer: 1500,
+            heightAuto: false,
+            background: '#742cd6',
+        
+        })
+        displayElement.projectModalWindow.style.display = 'none';
+        document.body.classList.remove('modal-open');
+        }
+    });
+
+    displayElement.defaultProject.addEventListener('click', () => {
+        displayElement.pageTitle.innerHTML = 'Default Project';
+    })
+
+    
 
 })();

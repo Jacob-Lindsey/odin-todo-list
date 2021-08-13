@@ -44,6 +44,7 @@ export function createItemElement(item,todos) {
         displayItemDetails(getId.getAttribute('data-key'),todos);
         document.getElementById('modal-window').style.display = 'block';
         document.getElementById('modal-window').style.opacity = '1';
+        document.body.classList.add('modal-open');
 
     })
 

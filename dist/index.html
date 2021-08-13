@@ -4,17 +4,18 @@
     <meta charset="utf-8" />
     <title>Development</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="style.css" rel="stylesheet" />
+    <!-- <link href="style.css" rel="stylesheet" />
     <link href="bulma.css" rel="stylesheet" />
-    <link href="normalize.css" rel="stylesheet" />
-    <script type="module" src="bundle.js"></script>
-  </head>
+    <link href="normalize.css" rel="stylesheet" /> -->
+    <!-- <script defer src="/bundle.js"></script> -->         <!-- UNCOMMENT THESE FOR GH-PAGES -->
+    <!-- <script type="module" src="bundle.js"></script> -->
+  <script defer src="bundle.js"></script></head>
   <body>
 
     <nav class="navbar" id="nav-main" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="#">
-          <img src="/dd5ce3d9df3318a1f19d.png" width="112" height="28">
+          <img src="dd5ce3d9df3318a1f19d.png" width="112" height="28">
         </a>
         <a role="button" class="navbar-burger has-text-light" aria-label="menu" aria-expanded="false" data-target="navMenu">
           <span aria-hidden="true"></span>
@@ -99,7 +100,7 @@
         </aside>
       </div> -->
       <!-- <div class="column is-1"></div> -->
-      <div class="column mt-6"></div>
+      <div class="column mt-6" id="content-spacer-left"></div>
       <div class="column is-6 mt-6" id="content-right">
         <div class="field has-addons column is-grouped is-grouped-centered is-full mb-6">
           <div class="control">
@@ -110,7 +111,7 @@
         <div class="column is-full" id="list">
         </div>
       </div>
-        <div class="column mt-6"></div>
+        <div class="column mt-6" id="content-spacer-right"></div>
       </div>
 
       <!-- ======================= MODAL CODE ======================= -->
@@ -199,6 +200,6 @@
           </footer>
         </div>
     </div>
-    <script type="module" src="../src/index.js"></script>
+    <!-- <script type="module" src="bundle.js"></script> -->
   </body>
 </html>

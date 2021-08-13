@@ -13,7 +13,7 @@ export function displayItemDetails(id,todos) {
     const hiddenID = document.getElementById('hidden-id');
     hiddenID.innerHTML = id;
     document.getElementById('modal-window').style.display = 'block';
-    document.querySelector('.modal-card-title').textContent = task.title;
+    document.querySelector('.modal-card-title').textContent = task.title + ' - ' + task.project;
     document.querySelector('.modal-card-title').value = task.title;
     document.getElementById('modal-task-title').textContent = task.title;
     document.getElementById('modal-task-title').value = task.title;
@@ -21,6 +21,7 @@ export function displayItemDetails(id,todos) {
     document.getElementById('modal-details').value = task.details;
     document.getElementById('priority-list').value = task.priority;
     document.getElementById('date-picker').value = task.deadline;
+    document.getElementById('project-selector').value = task.project;
     
     for (let i = 0; i < 5; i++) {
         if (task.category[i] == true) {

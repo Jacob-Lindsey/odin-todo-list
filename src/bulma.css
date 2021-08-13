@@ -495,7 +495,7 @@ a.box:active {
   background-color: #2cb3c5;
   border-color: #dbdbdb;
   border-width: 1px;
-  color: #363636;
+  color: #111;
   cursor: pointer;
   justify-content: center;
   padding-bottom: calc(0.5em - 1px);
@@ -5052,15 +5052,15 @@ button.dropdown-item.is-active {
 
 .menu-list a {
   border-radius: 2px;
-  color: #4a4a4a;
+  color: #b3b3b3e3;
   display: block;
   padding: 0.5em 0.75em;
 }
 
-.menu-list a:hover {
+/* .menu-list a:hover {
   background-color: whitesmoke;
   color: #363636;
-}
+} */
 
 .menu-list a.is-active {
   background-color: #485fc7;
@@ -5074,7 +5074,7 @@ button.dropdown-item.is-active {
 }
 
 .menu-label {
-  color: #7a7a7a;
+  color: #f0f0f0;
   font-size: 0.75em;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -5358,8 +5358,8 @@ button.dropdown-item.is-active {
   /* padding: 20px; */
   padding-top: 20px;
   padding-bottom: 20px;
-  padding-left: 25px;
-  padding-right: 5px;
+  padding-left: 5px;
+  padding-right: 20px;
   position: relative;
 }
 
@@ -6255,12 +6255,16 @@ a.navbar-item:focus, a.navbar-item:focus-within, a.navbar-item:hover, a.navbar-i
     display: none;
   }
   .navbar-menu {
-    background-color: white;
+    /* background-color: white; */
+    background-color: #13143c;
     box-shadow: 0 8px 16px rgba(10, 10, 10, 0.1);
-    padding: 0.5rem 0;
+    padding: 0.5rem 0; 
   }
   .navbar-menu.is-active {
     display: block;
+    position: absolute;
+    width: 100%;
+    z-index: 9999;
   }
   .navbar.is-fixed-bottom-touch, .navbar.is-fixed-top-touch {
     left: 0;
