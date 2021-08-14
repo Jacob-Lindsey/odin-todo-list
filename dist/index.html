@@ -28,58 +28,56 @@
           <a class="navbar-item has-text-primary">
             Home
           </a>
-          <a class="navbar-item has-text-primary">
+          <a class="navbar-item has-text-primary" id="new-project-top-nav">
             Add New Project
           </a>
         </div>
       </div>  
     </nav>
       
-    <div class="tabs is-centered is-boxed">
-      <ul>
-        <li id="All">
-          <a>
-            <span>All</span>
-          </a>
-        </li>
-        <li id="Shopping">
-          <a>
-            <span>Shopping</span>
-          </a>
-        </li>
-        <li id="Work">
-          <a>
-            <span>Work</span>
-          </a>
-        </li>
-        <li id="Social">
-          <a>
-            <span>Social</span>
-          </a>
-        </li>
-        <li id="Housework">
-          <a>
-            <span>Housework</span>
-          </a>
-        </li>
-        <li id="Notes">
-          <a>
-            <span>Notes</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-
-    <div class="columns is-centered">
-      <!-- <div class="column is-one-fifth"></div> -->
-      <div class="column is-three-fifths mt-6">
-        <h2 class="subtitle is-centered has-text-centered" id="category-title">ALL TASKS</h2>
-      </div>
-      <!-- <div class="column is-one-fifth"></div> -->
-    </div>
+  
 
 
-    <div class="columns">
+
+    <div class="columns pl-5">
+
+      <aside class="menu mt-6">
+        <p class="menu-label">
+          Categories
+        </p>
+        <ul class="menu-list">
+          <li id="All"><a>All</a></li>
+          <li id="Shopping"><a>Shopping</a></li>
+          <li id="Work"><a>Work</a></li>
+          <li id="Social"><a>Social</a></li>
+          <li id="Housework"><a>Housework</a></li>
+          <li id="Notes"><a>Notes</a></li>
+        </ul>
+        <p class="menu-label">
+          Deadline
+        </p>
+        <ul class="menu-list">
+          <li><a>Today</a></li>
+          <li><a>This Week</a></li>
+          <li><a>This month</a></li>
+          <li><a>Completed</a></li>
+        </ul>
+        <p class="menu-label">
+          Projects
+        </p>
+        <ul class="menu-list" id="project-list">
+          <li><a id="new-project">
+          <span class="icon-text">
+            <span class="icon">
+              <i class="fa fa-plus new-project-label-icon"></i>
+            </span>
+            <span">New Project</span>
+          </span>
+          </a></li>
+        </ul>
+        <ul class="menu-list"><a id="default-project">Default Project</a></ul>
+        <ul class="menu-list" id="project-link-list"></ul>
+      </aside>
       <!-- <div class="column is-2">
         <aside class="menu mt-6 ml-5">
           <p class="menu-label has-text-primary">Category</p>
@@ -102,6 +100,7 @@
       <!-- <div class="column is-1"></div> -->
       <div class="column mt-6" id="content-spacer-left"></div>
       <div class="column is-6 mt-6" id="content-right">
+        <div class="column is-10 py-0 mx-auto has-text-centered is-capitalized is-size-3" id="page-title">Default Project</div>
         <div class="field has-addons column is-grouped is-grouped-centered is-full mb-6">
           <div class="control">
             <input class="input" id="task-input" type="text" placeholder="Add a new task" tabindex="0" />
@@ -114,7 +113,7 @@
         <div class="column mt-6" id="content-spacer-right"></div>
       </div>
 
-      <!-- ======================= MODAL CODE ======================= -->
+      <!-- ======================= TASK MODAL CODE ======================= -->
 
       <div id="modal-window" class="modal">
         <div class="modal-background"></div>
@@ -162,44 +161,87 @@
                     <label for="cat4" class="checkbox">Housework</label>
                     <input type="checkbox" id="cat5" name="answer">  
                     <label for="cat5" class="checkbox">Notes</label>
-                      
-                    </div>
                   </div>
                 </div>
+              </div>
                 <div class="column"></div>
               </div>
-              <div class="columns mt-3">
-                <div class="field is-horizontal ml-3">
-                  <div class="field-label">
+              <div class="columns mt-5 is-justify-content-space-between">
+
+    
+                <div class="is-flex-direction-row is-flex">
+                  <div class="field-label pt-2 ml-3">
                     <label id="deadline-label" class="label">Deadline</label>
                   </div>
-                  <div class="field-body">
-                    <div class="field">
-                      <div class="control">
-                        <input class="input" id="date-picker" type="date">
-                      </div>
+
+                  <div class="field mr-auto">
+                    <div class="control">
+                      <input class="input" id="date-picker" type="date">
                     </div>
                   </div>
                 </div>
+                <div class="is-flex-direction-row is-flex">
+                  <div class="field-label pt-2">
+                    <label id="project-label" class="label">Move to project</label>
+                  </div>
+
+                  <div class="field has-addons mr-3">
+                    <div class="control">
+                      <div class="select">
+                        <select name="project" id="project-selector">
+                          <option value="Default Project">Default Project</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="control">
+                      <button class="button" id="move-project">Choose</button>
+                    </div>
+                  </div>
                 </div>
+
+              </div>
+          
 
 
           </section>
           <footer class="modal-card-foot">
-            <div class="columns" id="footer-elements">
-              <button class="button mt-1 ml-1" id="modal-save">Save</button>
+            <div id="footer-elements">
               <button class="button mt-1 ml-1" id="modal-cancel">Cancel</button>
-              <div class="column "></div>
-              <!-- <div class="column is-narrow" id="status-light">
-                <div class="icon">
-                  <i class="fa fa-circle" id="status-glow" aria-hidden="true"></i>
-                </div>
-              </div> -->
-              
+              <button class="button mt-1 ml-1" id="modal-save">Save</button>
             </div>
           </footer>
         </div>
     </div>
+
+    <!-- ======================= PROJECT MODAL CODE ======================= -->
+
+    <div id="project-modal-window" class="modal">
+      <div class="modal-background"></div>
+      <div id="project-modal-card" class="modal-card mt-6">
+        <div id="project-modal-header" class="modal-card-head">
+          <p id="project-modal-title" class="modal-card-title">New Project</p>
+          <button class="delete" aria-label="close" id="project-modal-exit"></button>
+          <!-- <p id="hidden-id"></p> -->
+        </div>
+        <section class="modal-card-body">
+          <div class="field is-horizontal">
+            <div class="field-body">
+              <div class="field">
+                <p class="control is-expanded">
+                  <input class="input" id="project-input" type="text" placeholder="Project Name">
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <footer class="modal-card-foot no-border-top">
+          <div id="project-footer-elements">
+              <button class="button mt-1 ml-1" id="project-modal-cancel">Cancel</button>
+              <button class="button mt-1 ml-1" id="project-modal-save">Save</button>
+          </div>
+        </footer>
+      </div>
+  </div>
     <!-- <script type="module" src="bundle.js"></script> -->
   </body>
 </html>

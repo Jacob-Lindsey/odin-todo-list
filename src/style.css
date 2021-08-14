@@ -217,6 +217,21 @@ i {
 
 #modal-card, #project-modal-card {
   width: 65%;
+  max-width: 860px;
+}
+
+#project-selector {
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+#move-project {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px;
 }
 
 .is-flex {
@@ -243,7 +258,7 @@ i {
   }
 
   #content-right {
-    width: 100%;
+    width: 80%;
   }
 
   #mobile-column {
@@ -267,6 +282,18 @@ i {
 
 #project-footer-elements, #footer-elements {
   display: flex;
+  
+}
+
+#footer-elements {
+  width: 100%;
+}
+
+#deadline-countdown {
+  
+}
+
+#project-footer-elements {
   margin-left: auto;
   width: 50%;
 }

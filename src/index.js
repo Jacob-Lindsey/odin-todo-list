@@ -156,6 +156,8 @@ const projectController = (function () {
             const newItem = createNewProject(item.title);
             newItem.addEventListener('click', function() {
                 displayElement.pageTitle.innerHTML = item.title;
+                console.log(item.title)
+                todoController.renderTodosByProject(item.title);
             })
             const projectSelectorOption = document.createElement('option');
             projectSelectorOption.setAttribute('value',item.title);
@@ -187,6 +189,16 @@ const projectController = (function () {
 //===========================Todo Object Functions===========================
 
 const todoController = (function () {
+
+    function renderTodosByProject(project) {
+        displayElement.aColumn.innerHTML = '';
+        todos.forEach(function(item) {
+            if (item.project == project) {
+                const newItem = createItemElement(item,todos);
+                displayElement.aColumn.appendChild(newItem);
+            }
+        })
+    }
 
     function renderTodos() {
         displayElement.aColumn.innerHTML = '';
@@ -253,17 +265,20 @@ const todoController = (function () {
     
             localStorage.setItem('todos', JSON.stringify(todos));
             clearModalFields();
-            renderTodos();
+            renderTodosByProject(displayElement.projectSelector.value);
         }
     }
 
     return {
+        renderTodosByProject,
         renderTodos,
         renderFilteredTodos,
         addTodo,
         editTodo,
     }
 })();
+
+
 
 export function deleteTodo(id) {
     todos = todos.filter(function(item) {
@@ -328,6 +343,7 @@ const appEventListeners = (function () {
 
     displayElement.tabAll.addEventListener('click', (e) => {
         localStorageController.getFromLocalStorage();
+        displayElement.pageTitle.innerHTML = 'All tasks';
         displayElement.tabAll.firstElementChild.classList.add('active-tab');
         displayElement.tabShopping.firstElementChild.classList.remove('active-tab');
         displayElement.tabWork.firstElementChild.classList.remove('active-tab');
@@ -616,6 +632,7 @@ const appEventListeners = (function () {
 
     displayElement.defaultProject.addEventListener('click', () => {
         displayElement.pageTitle.innerHTML = 'Default Project';
+        todoController.renderTodosByProject('Default Project');
     })
 
     
